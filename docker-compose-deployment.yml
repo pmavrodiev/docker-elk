@@ -40,6 +40,14 @@ services:
         source: ./logstash/pipeline
         target: /usr/share/logstash/pipeline
         read_only: true
+      - type: volume
+        source: jobs_crawler_logs
+        target: /usr/share/logstash/job_crawler_logs
+        read_only: true
+      - type: volume
+        source: ./logstash/file_completed
+        target: /usr/share/logstash/file_completed
+
     ports:
       - "5000:5000/tcp"
       - "5000:5000/udp"
@@ -68,9 +76,12 @@ services:
     depends_on:
       - elasticsearch
 
+
 networks:
-  elk:
-    driver: bridge
+  default:
+    external:
+      name: elk
 
 volumes:
   elasticsearch:
+  jobs_crawler_logs
